@@ -7,8 +7,8 @@ import { debounce } from "@/utils/CommonUtil"
  * @desc 登录
  */
 export const doLogin = async () => {
-	// #ifdef MP
 	if (!AuthUtil.isLogin()) {
+		// #ifdef MP
 		const code = await AuthUtil.getCode()
 		const userInfo = await AuthUtil.getUserInfo()
 		uni.request({
@@ -41,16 +41,16 @@ export const doLogin = async () => {
 			}
 		})
 		uni.setStorageSync('userInfo', userInfo)
-	}
-	// #endif
+		// #endif
 
-	// #ifndef MP
-	uni.showToast({
-		title: "设备不支持",
-		icon: "error"
-	})
-	reject("设备不支持")
-	// #endif
+		// #ifndef MP
+		uni.showToast({
+			title: "设备不支持",
+			icon: "error"
+		})
+		reject("设备不支持")
+		// #endif
+	}
 }
 
 /**

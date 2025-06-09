@@ -3,31 +3,88 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "服务控制台"
+				"navigationBarTitleText": "首页"
 			}
 		},
 		{
-			"path" : "pages/user/user",
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "我的信息"
+			}
+		},
+		{
+			"path": "pages/workspace/workspace",
+			"style": {
+				"navigationBarTitleText": "工作空间"
+			}
+		},
+		{
+			"path": "pages/logout/logout",
+			"style": {
+				"navigationBarTitleText": "登出完成"
+			}
+		},
+		{
+			"path" : "pages/new-events/new-events",
+			"style" : 
+			{
+				"navigationBarTitleText" : "活动签到"
+			}
+		},
+		{
+			"path" : "pages/old-events/old-events",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的足迹"
+			}
+		},
+		{
+			"path" : "pages/user-plus/user-plus",
 			"style" : 
 			{
 				"navigationBarTitleText" : "我的信息"
 			}
-		},
-		{
-			"path" : "pages/workspace/workspace",
-			"style" : 
-			{
-				"navigationBarTitleText" : "工作空间"
-			}
-		},
-		{
-			"path" : "pages/logout/logout",
-			"style" : 
-			{
-				"navigationBarTitleText" : "登出完成"
-			}
 		}
 	],
+	"subPackages": [{
+		"root": "subPackages/news/pages",
+		"pages": [{
+			"path": "news-info-list/news-info-list",
+			"style": {
+				"navigationBarTitleText": "喜讯"
+			}
+		}]
+	}, {
+		"root": "subPackages/member/pages",
+		"pages": [{
+			"path" : "member-info/member-info",
+			"style" : 
+			{
+				"navigationBarTitleText" : "会员信息"
+			}
+		}]
+	}, {
+		"root": "subPackages/event/pages",
+		"pages": [{
+				"path": "new-event-list/new-event-list",
+				"style": {
+					"navigationBarTitleText": "最新活动"
+				}
+			},
+			{
+				"path": "event-info/event-info",
+				"style": {
+					"navigationBarTitleText": "详情"
+				}
+			},
+			{
+				"path": "event-info-list/event-info-list",
+				"style": {
+					"navigationBarTitleText": "活动历史"
+				}
+			}
+		]
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -36,23 +93,27 @@
 	},
 	"uniIdRouter": {},
 	"tabBar": {
-		"list": [
-			{
-				"text": "首页",
-				"pagePath": "pages/index/index",
-				"iconPath": "/static/tabBar/home.png",
-				"selectedIconPath": "/static/tabBar/homeSel.png"
-			}, {
-				"text": "空间",
-				"pagePath": "pages/workspace/workspace",
-				"iconPath": "/static/tabBar/workspace.png",
-				"selectedIconPath": "/static/tabBar/workspaceSel.png"
-			}, {
-				"text": "我的",
-				"pagePath": "pages/user/user",
-				"iconPath": "/static/tabBar/user.png",
-				"selectedIconPath": "/static/tabBar/userSel.png"
-			}
-		]
+		"selectedColor": "#00B77A",
+		"list": [{
+			"text": "首页",
+			"pagePath": "pages/index/index",
+			"iconPath": "/static/tabBar/home.png",
+			"selectedIconPath": "/static/tabBar/homeSel.png"
+		}, {
+			"text": "签到",
+			"pagePath": "pages/new-events/new-events",
+			"iconPath": "/static/tabBar/signin.png",
+			"selectedIconPath": "/static/tabBar/signinSel.png"
+		}, {
+			"text": "足迹",
+			"pagePath": "pages/old-events/old-events",
+			"iconPath": "/static/tabBar/footprint.png",
+			"selectedIconPath": "/static/tabBar/footprintSel.png"
+		}, {
+			"text": "我的",
+			"pagePath": "pages/user/user",
+			"iconPath": "/static/tabBar/user.png",
+			"selectedIconPath": "/static/tabBar/userSel.png"
+		}]
 	}
 }

@@ -90,7 +90,8 @@
 			text-align: center;
 			font-size: 12px;
 			color: #999;
-			margin-top: 10px;
+			padding-top: 40px;
+			padding-bottom: 40rpx
 		}
 	}
 </style>
