@@ -17,6 +17,7 @@
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import * as AuthService from "@/service/AuthService"
 	// import * as ResUtil from "@/utils/ResUtil"
 
 	// const title = ref()
@@ -63,11 +64,11 @@
 	})
 
 	onShow(() => { // Uni lifecycle
-
+		AuthService.doLogin()
+		// UniStorage.refreshInfo()
 	})
 
 	onMounted(() => { // Vue lifecycle
-
 	})
 
 	// Expose methods for upper level

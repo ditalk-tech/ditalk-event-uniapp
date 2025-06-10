@@ -15,8 +15,8 @@
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import * as AuthService from "@/service/AuthService"
 	// import * as ResUtil from "@/utils/ResUtil"
-	// import * as UniStorage from "@/common/UniStorage"
 
 	// const title = ref()
 
@@ -57,18 +57,18 @@
 			url: '/subPackages/event/pages/event-info/event-info?id=' + id
 		})
 	}
-
+	
 	// Event
 	onLoad(() => { // Uni lifecycle
-
+	
 	})
-
+	
 	onShow(() => { // Uni lifecycle
-
+		AuthService.doLogin()
+		// UniStorage.refreshInfo()
 	})
-
+	
 	onMounted(() => { // Vue lifecycle
-
 	})
 
 	// Expose methods for upper level

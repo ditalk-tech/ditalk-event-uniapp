@@ -34,7 +34,7 @@
 
 		<!-- 生活瞬间区域 -->
 		<view class="dt_head-title">
-			<view class="title">生活瞬间展示</view>
+			<view class="title" @click="verifyToken">生活瞬间展示</view>
 			<view class="more" @click="handleEditMoments">点我编辑（最多5图）</view>
 		</view>
 		<!-- 循环渲染图片占位，这里模拟2张，实际可根据数据动态渲染 -->
@@ -52,6 +52,8 @@
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import * as AuthService from "@/service/AuthService"
+	import * as ResUtil from "@/utils/ResUtil"
 
 	// 定义用户信息数据（可根据实际需求从接口获取）
 	const memberInfo = ref({
@@ -73,7 +75,6 @@
 		]
 	})
 	
-	
 	const handleEditInfo = () => {
 		uni.showToast({
 			title: '进入信息编辑',
@@ -86,6 +87,25 @@
 			icon: 'none'
 		})
 	}
+	
+	const verifyToken = () => {
+		AuthService.verifyToken().then((res) => {
+			ResUtil.showMsg(res, res.data.msg)
+		})
+	}
+	
+	// Event
+	onLoad(() => { // Uni lifecycle
+	
+	})
+	
+	onShow(() => { // Uni lifecycle
+		AuthService.doLogin()
+		// UniStorage.refreshInfo()
+	})
+	
+	onMounted(() => { // Vue lifecycle
+	})
 </script>
 
 <style lang="scss" scoped>

@@ -54,6 +54,7 @@
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import * as AuthService from "@/service/AuthService"
 	// import * as ResUtil from "@/utils/ResUtil"
 
 	// 定义用户信息数据（可根据实际需求从接口获取）
@@ -120,6 +121,20 @@
 		})
 		// 可扩展：跳转到认证会员页面或弹出认证表单
 	}
+	
+	// Event
+	onLoad(() => { // Uni lifecycle
+	
+	})
+	
+	onShow(() => { // Uni lifecycle
+		AuthService.doLogin()
+		// UniStorage.refreshInfo()
+	})
+	
+	onMounted(() => { // Vue lifecycle
+	})
+	
 </script>
 
 <style lang="scss" scoped>
