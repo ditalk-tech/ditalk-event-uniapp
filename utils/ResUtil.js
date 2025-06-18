@@ -92,7 +92,7 @@ export const tokenInvalid = function(response) {
 		}).then(res => {
 			if (res.data.code == 401) { // Token 失效需要重新登录
 				uni.removeStorageSync("token")
-				uni.switchTab({
+				uni.reLaunch({
 					url: "/pages/index/index"
 				})
 			} else { // Token 有效，部分API产生的误报
