@@ -1,4 +1,5 @@
 /**
+ * Copyright 2025 DiTalk.tech All Rights Reserved.
  * @desc 函数防抖
  * @param func 目标函数
  * @param wait 延迟执行毫秒数

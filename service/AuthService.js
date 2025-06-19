@@ -1,3 +1,6 @@
+/**
+ * Copyright 2025 DiTalk.tech All Rights Reserved.
+ */
 import * as GlobalConfig from "@/common/GlobalConfig"
 import * as AuthUtil from "@/utils/AuthUtil"
 import * as ResUtil from "@/utils/ResUtil"

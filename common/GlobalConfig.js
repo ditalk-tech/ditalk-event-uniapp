@@ -1,3 +1,6 @@
+/**
+ * Copyright 2025 DiTalk.tech All Rights Reserved.
+ */
 export const tenantId = "000000" // 后端提供
 export const clientId = "1ee401e271db3f15cf61c93c5884bdd2" // 后端提供
 export const grantTypeXcx = "uniXcx" // 后台授权类型，授权方法

@@ -1,3 +1,6 @@
+<!--
+Copyright 2025 DiTalk.tech All Rights Reserved.
+-->
 <template>
 	<view class="page-container">
 		<!-- 头部信息区域 -->

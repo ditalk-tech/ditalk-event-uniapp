@@ -1,3 +1,6 @@
+<!--
+Copyright 2025 DiTalk.tech All Rights Reserved.
+-->
 <script>
 	export default {
 		onLaunch: function() {

@@ -1,5 +1,6 @@
-// validation.js
-
+/**
+ * Copyright 2025 DiTalk.tech All Rights Reserved.
+ */
 export const money = "money";
 export const number = "number";
 export const letter = "letter";

@@ -1,4 +1,7 @@
-// 用户登录管理
+/**
+ * Copyright 2025 DiTalk.tech All Rights Reserved.
+ * @desc 权限管理工具
+ */
 
 /**
  * @desc 获取用户登录状态

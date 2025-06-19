@@ -1,3 +1,6 @@
+<!--
+Copyright 2025 DiTalk.tech All Rights Reserved.
+-->
 <template>
 	<view class="page-container">
 		<view class="dt_grid_wrap">
