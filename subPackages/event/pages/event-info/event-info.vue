@@ -50,7 +50,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
-	import * as AuthService from "@/service/AuthService"
 	// import * as ResUtil from "@/utils/ResUtil"
 
 	const isNew = ref(false)
@@ -130,7 +129,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	})
 
 	onShow(() => { // Uni lifecycle
-		AuthService.doLogin()
 	})
 
 	onMounted(() => { // Vue lifecycle

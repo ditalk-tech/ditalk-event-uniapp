@@ -29,12 +29,15 @@ export const doLogin = async () => {
 				avatar: userInfo.avatarUrl
 			},
 			success(res) {
-				const data = ResUtil.getDataA(res)
+				const data = ResUtil.getData(res)
 				if (!!data.openid) {
 					uni.setStorageSync("openid", data.openid)
 				}
 				if (!!data.access_token) {
 					uni.setStorageSync("token", data.access_token)
+					uni.reLaunch({
+						url: "/pages/index/index"
+					})
 				} else {
 					uni.removeStorageSync("token")
 				}
@@ -51,7 +54,6 @@ export const doLogin = async () => {
 			title: "设备不支持",
 			icon: "error"
 		})
-		reject("设备不支持")
 		// #endif
 	}
 }

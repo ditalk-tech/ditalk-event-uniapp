@@ -66,7 +66,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
-	import * as AuthService from "@/service/AuthService"
 
 	// 定义用户信息数据（可根据实际需求从接口获取）
 	const memberInfo = ref({
@@ -109,8 +108,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	})
 
 	onShow(() => { // Uni lifecycle
-		AuthService.doLogin()
-		// UniStorage.refreshInfo()
 	})
 
 	onMounted(() => { // Vue lifecycle

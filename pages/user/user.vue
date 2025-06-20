@@ -103,8 +103,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	})
 	
 	onShow(() => { // Uni lifecycle
-		AuthService.doLogin()
-		// UniStorage.refreshInfo()
 	})
 	
 	onMounted(() => { // Vue lifecycle

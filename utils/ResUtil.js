@@ -28,8 +28,8 @@ export const isSuccess = function(response) {
  * @param {Object} response
  * @return {Object}
  */
-export const getDataA = function(response) {
-	return getData(response, response.data.data, response.data.msg)
+export const getData = function(response) {
+	return getDataX(response, response.data.data, response.data.msg)
 }
 
 /**
@@ -37,27 +37,18 @@ export const getDataA = function(response) {
  * @param {Object} response
  * @return {Object}
  */
-export const getDataB = function(response) {
-	return getData(response, response.data.rows, response.data.msg)
-}
-
-/**
- * @desc 获取后端响应结果数据 response.data
- * @param {Object} response
- * @return {Object}
- */
-export const getDataC = function(response, data, msg) {
-	return getData(response, response.data, response.data.msg)
+export const getDataRows = function(response) {
+	return getDataX(response, response.data.rows, response.data.msg)
 }
 
 /**
  * @desc 获取后端响应结果数据
  * @param {Object} response
- * @param {String} data 指定response中数据所在的属性，如response.data、response.data.data、response.data.rows
- * @param {String} msg 指定response中消息所在的属性，如response.data.msg、response.data.error
+ * @param {String} data 指定response中属性，如response.data.data、response.data.rows
+ * @param {String} msg 指定response中属性，如response.data.msg、response.data.error
  * @return {Object}
  */
-export const getData = function(response, data, msg) {
+export const getDataX = function(response, data, msg) {
 	tokenInvalid(response)
 	if (isSuccess(response)) {
 		return data
@@ -95,8 +86,18 @@ export const tokenInvalid = function(response) {
 		}).then(res => {
 			if (res.data.code == 401) { // Token 失效需要重新登录
 				uni.removeStorageSync("token")
-				uni.reLaunch({
-					url: "/pages/index/index"
+				uni.showModal({
+					title: "提示",
+					content: "登录已过期，请重新登录",
+					showCancel: false,
+					confirmText: "重新登录",
+					success: function(res) {
+						if (res.confirm) {
+							uni.reLaunch({
+								url: "/pages/login/login"
+							})
+						}
+					}
 				})
 			} else { // Token 有效，部分API产生的误报
 				uni.showToast({

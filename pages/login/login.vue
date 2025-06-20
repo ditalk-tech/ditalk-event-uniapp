@@ -1,0 +1,77 @@
+<!--
+Copyright 2025 DiTalk.tech All Rights Reserved.
+-->
+<template>
+	<view class="page-container">
+		<image src="/static/logo.svg" class="logo"></image>
+		<button @click="AuthService.doLogin()">登录刷新</button>
+	</view>
+</template>
+
+<script setup>
+	import { ref, computed, watch, onMounted } from "vue"
+	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import * as AuthService from "@/service/AuthService"
+	import * as ResUtil from "@/utils/ResUtil"
+
+	// const title = ref()
+
+	// const props = defineProps({})
+
+	// Computed
+	// const xxx = computed(() => {
+	// 	return xxx;
+	// })
+
+	// Watch
+	// watch(xxx, (newValue) => {
+	// })
+	
+	// Emit
+	// const emit = defineEmits(['change', 'remove', 'empty'])
+	// const onChange = (value) => {
+	// 	emit('change', arg1, arg2)
+	// }
+	
+	// Methods
+	// const xxx = () => {}
+
+	// Event
+	onLoad(async (options) => { // Uni lifecycle
+		console.log("options", options)
+		AuthService.doLogin()
+	})
+
+	onShow(() => { // Uni lifecycle
+		console.log("onShow")
+	})
+
+	onMounted(() => { // Vue lifecycle
+
+	})
+	
+	// Expose methods for upper level
+	// defineExpose({
+	// 	one, two ,three
+	// });
+	// upper level eg.
+	// <Some ref="SomeRef"></Some>
+	// const SomeRef = ref(null); // 获取子组件实例(需要跟ref处同名)
+</script>
+
+<style lang="scss" scoped>
+	.page-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		
+		.logo {
+			width: 400rpx;
+			height: 400rpx;
+			margin: 0 auto;
+			margin-top: 100rpx;
+		}
+		
+	}
+</style>

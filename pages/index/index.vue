@@ -3,7 +3,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 -->
 <template>
 	<view class="page-container">
-		<image class="banner" src="http://static.ditalk.tech/salon_1001.png"></image>
+		<image class="banner" :src="bannerImageUrl"></image>
 		<view class="dt_head-title">
 			<view class="title">喜讯消息<text style="font-size: small;">（总数 256）</text></view>
 			<view class="more" @click="toPage('newsInfoList')">更多...</view>
@@ -50,9 +50,13 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
-	import * as AuthService from "@/service/AuthService"
+	import * as BannerService from "@/service/BannerService"
 	import * as ResUtil from "@/utils/ResUtil"
 
+	// Props
+	
+	// Data
+	const bannerImageUrl = ref()
 	// const title = ref()
 	const newsInfoList = ref([
 		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
@@ -134,9 +138,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 	})
 
-	onShow(() => { // Uni lifecycle
-		AuthService.doLogin()
-		// UniStorage.refreshInfo()
+	onShow(async () => { // Uni lifecycle
+		bannerImageUrl.value = await BannerService.getImage()
 	})
 
 	onMounted(() => { // Vue lifecycle

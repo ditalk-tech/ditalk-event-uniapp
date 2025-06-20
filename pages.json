@@ -44,6 +44,13 @@
 			{
 				"navigationBarTitleText" : "我的信息"
 			}
+		},
+		{
+			"path" : "pages/login/login",
+			"style" : 
+			{
+				"navigationBarTitleText" : "用户登录"
+			}
 		}
 	],
 	"subPackages": [{
