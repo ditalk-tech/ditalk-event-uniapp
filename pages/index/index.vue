@@ -3,7 +3,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 -->
 <template>
 	<view class="page-container">
-		<image class="banner" :src="bannerImageUrl"></image>
+		<image class="banner" :src="bannerUrl"></image>
 		<view class="dt_head-title">
 			<view class="title">喜讯消息<text style="font-size: small;">（总数 256）</text></view>
 			<view class="more" @click="toPage('newsInfoList')">更多...</view>
@@ -56,7 +56,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// Props
 	
 	// Data
-	const bannerImageUrl = ref()
+	const bannerUrl = ref()
 	// const title = ref()
 	const newsInfoList = ref([
 		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
@@ -139,7 +139,9 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	})
 
 	onShow(async () => { // Uni lifecycle
-		bannerImageUrl.value = await BannerService.getImage()
+		const res = await BannerService.getImage()
+		const jsonStr = ResUtil.getData(res)
+		bannerUrl.value = JSON.parse(jsonStr).url
 	})
 
 	onMounted(() => { // Vue lifecycle

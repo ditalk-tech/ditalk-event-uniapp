@@ -1,7 +1,6 @@
 /**
  * Copyright 2025 DiTalk.tech All Rights Reserved.
  */
-import { verifyToken } from "../service/AuthService"
 
 const okCode = 200 // 业务响应码
 
