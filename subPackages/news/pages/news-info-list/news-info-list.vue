@@ -4,7 +4,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <template>
 	<view class="page-container">
 		<view class="dt_head-title">
-			<view class="title">总数 256</view>
+			<view class="title">总数 {{newsInfoTotal}}</view>
 		</view>
 		<view class="news-info">
 			<view v-for="(item,index) in newsInfoList" :key="index" class="items">
@@ -12,15 +12,20 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				<view class="content">{{item.content}}</view>
 			</view>
 		</view>
+		<dt-load-more :hasMore="hasMore"></dt-load-more>
 	</view>
 </template>
 
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
-	import { onLoad, onShow } from "@dcloudio/uni-app"
-	// import * as ResUtil from "@/utils/ResUtil"
+	import { onLoad, onShow, onReachBottom } from "@dcloudio/uni-app"
+	import * as NewsInfoService from "@/service/NewsInfoService"
+	import * as ResUtil from "@/utils/ResUtil"
 
-	// const title = ref()
+	const newsInfoTotal = ref(0)
+	const newsInfoList = ref([])
+	const lastId = ref("")
+	const hasMore = ref(true)
 
 	// const props = defineProps({})
 
@@ -41,83 +46,39 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 	// Methods
 	// const xxx = () => {}
-	const newsInfoList = ref([
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04', content: '王五、陈红' },
-		{ eventTime: '2022-01-03', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01', content: '罗伟、陈红红' },
-	])
+	const loadMore = () => {
+		loadNewsInfo()
+	}
+
+	const loadNewsInfo = () => {
+		let pageSize = 30 // 默认是30
+		if (hasMore.value) {
+			uni.showLoading({ title: '加载中', mask: true })
+			NewsInfoService.list({ 'id': lastId.value, 'pageSize': pageSize }).then(res => {
+				const newDate = ResUtil.getData(res)
+				if (!!newDate && newDate.length > 0) {
+					newsInfoList.value = [...newsInfoList.value, ...newDate]; // 展开追加记录
+					lastId.value = newsInfoList.value.at(-1).id
+					newDate.length >= pageSize ? hasMore.value = true : hasMore.value = false
+				} else {
+					hasMore.value = false
+				}
+			}).finally(() => {
+				uni.hideLoading()
+			})
+		} else {
+			hasMore.value = false
+		}
+	}
 
 	// Event
-	onLoad(() => { // Uni lifecycle
-
+	onLoad((options) => { // Uni lifecycle
+		//
+		loadNewsInfo()
+		//
+		NewsInfoService.total().then(res => {
+			newsInfoTotal.value = ResUtil.getData(res)
+		})
 	})
 
 	onShow(() => { // Uni lifecycle
@@ -125,6 +86,10 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 	onMounted(() => { // Vue lifecycle
 
+	})
+
+	onReachBottom(() => {
+		loadMore()
 	})
 
 	// Expose methods for upper level
@@ -138,6 +103,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 <style lang="scss" scoped>
 	.page-container {
+		padding-bottom: env(safe-area-inset-bottom);
+		padding-bottom: constant(safe-area-inset-bottom);
 
 		.news-info {
 			box-sizing: border-box;
@@ -148,6 +115,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+				margin-top: 30rpx;
 				margin-bottom: 6rpx;
 
 				.event-time {
