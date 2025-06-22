@@ -3,7 +3,6 @@
  * @desc 横幅服务接口
  * @author weidixian
  */
-import * as ResUtil from '@/utils/ResUtil';
 
 /**
  * 获取横幅

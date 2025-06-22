@@ -5,7 +5,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	<view class="page-container">
 		<image class="banner" :src="bannerUrl"></image>
 		<view class="dt_head-title">
-			<view class="title">喜讯消息<text style="font-size: small;">（总数 256）</text></view>
+			<view class="title">喜讯消息<text style="font-size: small;">（总数 {{newsInfoTotal}}）</text></view>
 			<view class="more" @click="toPage('newsInfoList')">更多...</view>
 		</view>
 		<view class="news-info">
@@ -51,20 +51,15 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
 	import * as BannerService from "@/service/BannerService"
+	import * as NewsInfoService from "@/service/NewsInfoService"
 	import * as ResUtil from "@/utils/ResUtil"
 
 	// Props
-	
+
 	// Data
 	const bannerUrl = ref()
-	// const title = ref()
-	const newsInfoList = ref([
-		{ eventTime: '2022-01-05 12:00', content: '张三、李四' },
-		{ eventTime: '2022-01-04 12:00', content: '王五、陈红' },
-		{ eventTime: '2022-01-03 12:00', content: '邓宝、张艳' },
-		{ eventTime: '2022-01-02 12:00', content: '刘农伟、吴利利' },
-		{ eventTime: '2022-01-01 12:00', content: '罗伟、陈红红' },
-	])
+	const newsInfoList = ref([])
+	const newsInfoTotal = ref(0)
 
 	const newEvent = ref({
 		coverImage: 'http://static.ditalk.tech/salon_1001.png',
@@ -134,14 +129,30 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	}
 
 	// Event
-	onLoad(() => { // Uni lifecycle
-
+	onLoad((options) => { // Uni lifecycle
+		BannerService.getImage().then(res => {
+			const jsonStr = ResUtil.getData(res)
+			bannerUrl.value = JSON.parse(jsonStr).url
+		})
+		NewsInfoService.list({ 'pageSize': 4 }).then(res => {
+			newsInfoList.value = ResUtil.getData(res)
+		})
+		NewsInfoService.total().then(res => {
+			newsInfoTotal.value = ResUtil.getData(res)
+		})
 	})
 
-	onShow(async () => { // Uni lifecycle
-		const res = await BannerService.getImage()
-		const jsonStr = ResUtil.getData(res)
-		bannerUrl.value = JSON.parse(jsonStr).url
+	onShow(() => { // Uni lifecycle
+		// // 
+		// const newsInfoRes = await NewsInfoService.getNewsInfoList()
+		// newsInfoList.value = ResUtil.getData(newsInfoRes)
+		// // 
+		// const res = await BannerService.getImage()
+		// const jsonStr = ResUtil.getData(res)
+		// bannerUrl.value = JSON.parse(jsonStr).url
+	})
+
+	onShow(() => { // Uni lifecycle
 	})
 
 	onMounted(() => { // Vue lifecycle
