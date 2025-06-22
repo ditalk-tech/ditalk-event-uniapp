@@ -61,6 +61,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 <style lang="scss" scoped>
 	.page-container {
+		padding-bottom: env(safe-area-inset-bottom);
+		padding-bottom: constant(safe-area-inset-bottom);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

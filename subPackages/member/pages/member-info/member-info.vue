@@ -60,6 +60,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				</view>
 			</view>
 		</view>
+		
+		<dt-copyright></dt-copyright>
 	</view>
 </template>
 
@@ -117,6 +119,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <style lang="scss" scoped>
 	/* 卡片整体样式 */
 	.page-container {
+		padding-bottom: env(safe-area-inset-bottom);
+		padding-bottom: constant(safe-area-inset-bottom);
 		box-sizing: border-box;
 		width: 100%;
 		padding: 20rpx;

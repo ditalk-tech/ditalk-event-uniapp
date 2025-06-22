@@ -39,13 +39,6 @@
 			}
 		},
 		{
-			"path" : "pages/user-plus/user-plus",
-			"style" : 
-			{
-				"navigationBarTitleText" : "我的信息"
-			}
-		},
-		{
 			"path" : "pages/login/login",
 			"style" : 
 			{

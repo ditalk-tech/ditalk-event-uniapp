@@ -112,6 +112,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <style lang="scss" scoped>
 	/* 卡片整体样式 */
 	.page-container {
+		padding-bottom: env(safe-area-inset-bottom);
+		padding-bottom: constant(safe-area-inset-bottom);
 
 		// 简介
 		.user-info {

@@ -59,5 +59,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 </script>
 
 <style lang="scss" scoped>
-	.page-container {}
+	.page-container {
+		padding-bottom: env(safe-area-inset-bottom);
+		padding-bottom: constant(safe-area-inset-bottom);
+	}
 </style>
