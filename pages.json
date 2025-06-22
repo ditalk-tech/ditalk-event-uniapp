@@ -78,7 +78,7 @@
 				}
 			},
 			{
-				"path": "event-info-list/event-info-list",
+				"path": "old-event-list/old-event-list",
 				"style": {
 					"navigationBarTitleText": "活动历史"
 				}

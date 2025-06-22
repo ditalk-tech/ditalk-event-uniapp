@@ -10,7 +10,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		</view>
 		<view class="news-info">
 			<view v-for="(item,index) in newsInfoList" :key="index" class="items">
-				<view class="event-time">{{item.eventTime}}</view>
+				<view class="event-time">{{dayjs(item.eventTime).format('YYYY-MM-DD')}}</view>
 				<view class="content">{{item.content}}</view>
 			</view>
 		</view>
@@ -20,27 +20,29 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		</view>
 		<view class="new-event">
 			<view v-for="(item,index) in newEventList" :key="index" class="event" @click="toEventInfo(true)">
-				<image class="cover-image" :src="newEvent.coverImage"></image>
-				<view class="title">{{newEvent.title}}</view>
-				<view class="application-deadline">报名截止：{{newEvent.applicationDeadline}}</view>
-				<view class="start-time">活动时间：{{newEvent.startTime}}</view>
-				<view class="people-number">已报名人数：{{newEvent.peopleNumber}}</view>
-				<view class="location">地点：{{newEvent.location}}</view>
+				<image class="cover-image" :src="item.coverImageUrl"></image>
+				<view class="title">{{item.title}}</view>
+				<view class="application-deadline">报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD HH:mm')}}
+				</view>
+				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD HH:mm')}}</view>
+				<view class="quota">活动名额：{{JSON.parse(item.memberIds).length}} / {{item.quota}}</view>
+				<view class="location">地点：{{item.location}}</view>
 				<view class="register-btn">我要报名</view>
 			</view>
 		</view>
 		<view class="dt_head-title">
 			<view class="title">历史活动</view>
-			<view class="more" @click="toPage('eventInfoList')">更多...</view>
+			<view class="more" @click="toPage('oldEventList')">更多...</view>
 		</view>
 		<view class="event-info">
-			<view v-for="(item,index) in eventInfoList" :key="index" class="event" @click="toEventInfo(false)">
-				<image class="cover-image" :src="eventInfo.coverImage"></image>
-				<view class="title">{{eventInfo.title}}</view>
-				<view class="application-deadline">报名截止：{{eventInfo.applicationDeadline}}</view>
-				<view class="start-time">活动时间：{{eventInfo.startTime}}</view>
-				<view class="people-number">已报名人数：{{eventInfo.peopleNumber}}</view>
-				<view class="location">地点：{{eventInfo.location}}</view>
+			<view v-for="(item,index) in oldEventList" :key="index" class="event" @click="toEventInfo(false)">
+				<image class="cover-image" :src="item.coverImageUrl"></image>
+				<view class="title">{{item.title}}</view>
+				<view class="application-deadline">报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD HH:mm')}}
+				</view>
+				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD HH:mm')}}</view>
+				<view class="quota">活动名额：{{JSON.parse(item.memberIds).length}} / {{item.quota}}</view>
+				<view class="location">地点：{{item.location}}</view>
 			</view>
 		</view>
 		<dt-copyright></dt-copyright>
@@ -50,8 +52,10 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import dayjs from 'dayjs';
 	import * as BannerService from "@/service/BannerService"
 	import * as NewsInfoService from "@/service/NewsInfoService"
+	import * as EventInfoService from "@/service/EventInfoService"
 	import * as ResUtil from "@/utils/ResUtil"
 
 	// Props
@@ -60,25 +64,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	const bannerUrl = ref()
 	const newsInfoList = ref([])
 	const newsInfoTotal = ref(0)
-
-	const newEvent = ref({
-		coverImage: 'http://static.ditalk.tech/salon_1001.png',
-		title: '兴趣交流沙龙',
-		applicationDeadline: '2022-01-05 12:00',
-		startTime: '2022-01-06 10:00',
-		peopleNumber: 10,
-		location: '深圳市南山区前海路3168号XXX活动中心xxx多媒体室'
-	})
-	const newEventList = ref([{}, {}, {}, {}, {}, ])
-	const eventInfo = ref({
-		coverImage: 'http://static.ditalk.tech/salon_1001.png',
-		title: '兴趣交流沙龙',
-		applicationDeadline: '2022-01-05 12:00',
-		startTime: '2022-01-06 10:00',
-		peopleNumber: 10,
-		location: '深圳市南山区前海路3168号XXX活动中心xxx多媒体室'
-	})
-	const eventInfoList = ref([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, ])
+	const newEventList = ref([])
+	const oldEventList = ref([])
 
 	// const props = defineProps({})
 
@@ -112,7 +99,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 					url: '/subPackages/event/pages/new-event-list/new-event-list'
 				})
 				break;
-			case 'eventInfoList':
+			case 'oldEventList':
 				uni.navigateTo({
 					url: '/subPackages/event/pages/event-info-list/event-info-list'
 				})
@@ -139,6 +126,12 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		})
 		NewsInfoService.total().then(res => {
 			newsInfoTotal.value = ResUtil.getData(res)
+		})
+		EventInfoService.newList({ 'pageSize': 6 }).then(res => {
+			newEventList.value = ResUtil.getData(res)
+		})
+		EventInfoService.oldList({ 'pageSize': 16 }).then(res => {
+			oldEventList.value = ResUtil.getData(res)
 		})
 	})
 
@@ -212,13 +205,15 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;
-			align-items: center;
+			// align-items: center;
 			box-sizing: border-box;
 			width: 100%;
 			padding: 0 20rpx;
 			margin-top: 20rpx;
 
 			.event {
+				display: flex;
+				flex-direction: column;
 				width: 49%;
 				margin-bottom: 10rpx;
 				background-color: #fff;
@@ -234,22 +229,19 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 					border-radius: 10rpx;
 				}
 
-				.title {}
-
-				.start-time {
-					color: $global-dark-gray;
+				.title {
+					margin: 6rpx 0;
 				}
 
-				.application-deadline {
-					color: $global-dark-gray;
-				}
-
-				.people-number {
+				.start-time,
+				.application-deadline,
+				.quota,
+				.location {
 					color: $global-dark-gray;
 				}
 
 				.location {
-					color: $global-dark-gray;
+					flex: 1;
 					margin-bottom: 10rpx;
 				}
 

@@ -8,7 +8,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		</view>
 		<view class="news-info">
 			<view v-for="(item,index) in newsInfoList" :key="index" class="items">
-				<view class="event-time">{{item.eventTime}}</view>
+				<view class="event-time">{{dayjs(item.eventTime).format('YYYY-MM-DD')}}</view>
 				<view class="content">{{item.content}}</view>
 			</view>
 		</view>
@@ -19,6 +19,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow, onReachBottom } from "@dcloudio/uni-app"
+	import dayjs from 'dayjs';
 	import * as NewsInfoService from "@/service/NewsInfoService"
 	import * as ResUtil from "@/utils/ResUtil"
 
