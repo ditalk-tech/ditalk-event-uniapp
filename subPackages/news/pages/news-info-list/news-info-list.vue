@@ -7,7 +7,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view class="title">总数 {{newsInfoTotal}}</view>
 		</view>
 		<view class="news-info">
-			<view v-for="(item,index) in newsInfoList" :key="index" class="items">
+			<view v-for="(item,index) in dataList" :key="index" class="items">
 				<view class="event-time">{{dayjs(item.eventTime).format('YYYY-MM-DD')}}</view>
 				<view class="content">{{item.content}}</view>
 			</view>
@@ -24,7 +24,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	import * as ResUtil from "@/utils/ResUtil"
 
 	const newsInfoTotal = ref(0)
-	const newsInfoList = ref([])
+	const dataList = ref([])
 	const lastId = ref("")
 	const hasMore = ref(true)
 
@@ -46,7 +46,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// }
 
 	// Methods
-	// const xxx = () => {}
 	const loadMore = () => {
 		loadNewsInfo()
 	}
@@ -56,11 +55,11 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		if (hasMore.value) {
 			uni.showLoading({ title: '加载中', mask: true })
 			NewsInfoService.list({ 'id': lastId.value, 'pageSize': pageSize }).then(res => {
-				const newDate = ResUtil.getData(res)
-				if (!!newDate && newDate.length > 0) {
-					newsInfoList.value = [...newsInfoList.value, ...newDate]; // 展开追加记录
-					lastId.value = newsInfoList.value.at(-1).id
-					newDate.length >= pageSize ? hasMore.value = true : hasMore.value = false
+				const newData = ResUtil.getData(res)
+				if (!!newData && newData.length > 0) {
+					dataList.value = [...dataList.value, ...newData]; // 展开追加记录
+					lastId.value = dataList.value.at(-1).id
+					newData.length >= pageSize ? hasMore.value = true : hasMore.value = false
 				} else {
 					hasMore.value = false
 				}

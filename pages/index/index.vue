@@ -22,7 +22,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view v-for="(item,index) in newEventList" :key="index" class="event" @click="toEventInfo(true)">
 				<image class="cover-image" :src="item.coverImageUrl"></image>
 				<view class="title">{{item.title}}</view>
-				<view class="application-deadline">报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD HH:mm')}}
+				<view class="application-deadline">
+					报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD HH:mm')}}
 				</view>
 				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD HH:mm')}}</view>
 				<view class="quota">活动名额：{{JSON.parse(item.memberIds).length}} / {{item.quota}}</view>
@@ -34,11 +35,12 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view class="title">历史活动</view>
 			<view class="more" @click="toPage('oldEventList')">更多...</view>
 		</view>
-		<view class="event-info">
+		<view class="old-event">
 			<view v-for="(item,index) in oldEventList" :key="index" class="event" @click="toEventInfo(false)">
 				<image class="cover-image" :src="item.coverImageUrl"></image>
 				<view class="title">{{item.title}}</view>
-				<view class="application-deadline">报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD HH:mm')}}
+				<view class="application-deadline">
+					报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD HH:mm')}}
 				</view>
 				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD HH:mm')}}</view>
 				<view class="quota">活动名额：{{JSON.parse(item.memberIds).length}} / {{item.quota}}</view>
@@ -101,7 +103,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				break;
 			case 'oldEventList':
 				uni.navigateTo({
-					url: '/subPackages/event/pages/event-info-list/event-info-list'
+					url: '/subPackages/event/pages/old-event-list/old-event-list'
 				})
 				break;
 			default:
@@ -201,7 +203,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		}
 
 		.new-event,
-		.event-info {
+		.old-event {
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;
