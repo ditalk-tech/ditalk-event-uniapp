@@ -19,7 +19,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view class="more" @click="toPage('newEventList')">更多...</view>
 		</view>
 		<view class="new-event">
-			<view v-for="(item,index) in newEventList" :key="index" class="event" @click="toEventInfo(true)">
+			<view v-for="(item,index) in newEventList" :key="index" class="event" @click="toEventInfo(item.id)">
 				<image class="cover-image" :src="item.coverImageUrl"></image>
 				<view class="title">{{item.title}}</view>
 				<view class="application-deadline">
@@ -36,7 +36,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view class="more" @click="toPage('oldEventList')">更多...</view>
 		</view>
 		<view class="old-event">
-			<view v-for="(item,index) in oldEventList" :key="index" class="event" @click="toEventInfo(false)">
+			<view v-for="(item,index) in oldEventList" :key="index" class="event" @click="toEventInfo(item.id)">
 				<image class="cover-image" :src="item.coverImageUrl"></image>
 				<view class="title">{{item.title}}</view>
 				<view class="application-deadline">
