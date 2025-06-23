@@ -4,7 +4,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <template>
 	<view class="page-container">
 		<view class="new-event">
-			<view v-for="(item,index) in dataList" :key="index" class="event" @click="toEventInfo(true)">
+			<view v-for="(item,index) in dataList" :key="index" class="event" @click="toEventInfo(item.id)">
 				<image class="cover-image" :src="item.coverImageUrl"></image>
 				<view class="title">{{item.title}}</view>
 				<view class="application-deadline">报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD HH:mm')}}
