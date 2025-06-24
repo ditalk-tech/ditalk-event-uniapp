@@ -8,9 +8,9 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				<image class="cover-image" :src="item.coverImageUrl"></image>
 				<view class="title">{{item.title}}</view>
 				<view class="application-deadline">
-					报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD HH:mm')}}
+					报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD')}}
 				</view>
-				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD HH:mm')}}</view>
+				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD')}}</view>
 				<view class="quota">活动名额：{{JSON.parse(item.memberIds).length}} / {{item.quota}}</view>
 				<view class="location">地点：{{item.location}}</view>
 			</view>

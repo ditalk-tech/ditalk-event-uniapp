@@ -32,7 +32,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		</view>
 
 		<template v-if="!isNew">
-			<view class="dt_head-title">
+			<view class="dt_head-title-noline">
 				<view class="title">活动精彩瞬间</view>
 			</view>
 			<view class="moment-list" v-for="(item,index) in momentList" :key="index">
@@ -152,6 +152,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			.title {
 				font-size: large;
 				font-weight: bold;
+				margin: 6rpx 0 12rpx 0;
 			}
 
 			.start-time {}
@@ -225,16 +226,18 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		}
 
 		.moment-list {
+			margin: 0 20rpx;
 
 			.moment-image {
+				border-radius: 16rpx;
 				width: 100%;
 			}
 
 			.moment-desc {
 				font-size: small;
 				color: $global-dark-gray;
-				margin: 10rpx 20rpx;
-				margin: 0 20rpx 20rpx 20rpx;
+				margin-top: 4rpx;
+				margin-bottom: 20rpx;
 			}
 		}
 	}
