@@ -10,6 +10,10 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				<!-- 这里用背景色模拟头像，实际可替换为 <image> 加载真实图片 -->
 				<image class="avatar-circle" :src="memberInfo?.avatarUrl || ''"></image>
 			</view>
+			<!-- 姓名 -->
+			<view class="header-middle">
+				<view class="nick-name">{{ memberInfo?.nickName || "" }}</view>
+			</view>
 			<!-- 状态与点赞 -->
 			<view class="header-right">
 				<view class="status">状态：{{ memberInfo?.openStateLabel || "" }}</view>
@@ -48,13 +52,13 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 		<!-- 生活瞬间区域 -->
 
-		<view class="dt_head-title">
+		<view class="dt_head-title-noline">
 			<view class="title">生活瞬间（最多5图）</view>
 		</view>
 		<view v-for="(item, index) in momentList" :key="index" class="moment">
-			<image class="image" src="http://static.ditalk.tech/salon_1002.png"></image>
-			<text class="desc">
-				{{ item.desc }}
+			<image class="image" :src="item.photoUrl"></image>
+			<text class="caption">
+				{{ item.caption }}
 			</text>
 		</view>
 
@@ -66,6 +70,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
 	import * as MemberInfoService from "@/service/MemberInfoService"
+	import * as MemberPhotoService from "@/service/MemberPhotoService"
 	import * as ResUtil from "@/utils/ResUtil"
 
 	// 用户信息数据
@@ -91,6 +96,11 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	onLoad((options) => { // Uni lifecycle
 		MemberInfoService.basicInfo(options.id).then(res => {
 			memberInfo.value = ResUtil.getData(res)
+			if (!!memberInfo.value && !!memberInfo.value.id) {
+				MemberPhotoService.listMember(memberInfo.value.id, {}).then(res => {
+					momentList.value = ResUtil.getData(res)
+				})
+			}
 		})
 	})
 
@@ -126,6 +136,20 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 					height: 160rpx;
 					border-radius: 50%;
 					background-color: $global-light-gray;
+				}
+			}
+			
+			.header-middle {
+				flex: 1;
+				margin-left: 20rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+
+				.nick-name {
+					font-size: larger;
+					font-weight: bold;
+					margin-bottom: 16rpx;
 				}
 			}
 
@@ -190,12 +214,15 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		// 生活瞬间区域
 		.moment {
 			margin-bottom: 30rpx;
+			padding: 0 20rpx;
 
 			.image {
+				box-sizing: border-box;
+				border-radius: 16rpx;
 				width: 100%;
 			}
 
-			.desc {
+			.caption {
 				display: block;
 				font-size: 24rpx;
 				line-height: 1.6;

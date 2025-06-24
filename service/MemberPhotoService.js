@@ -1,6 +1,6 @@
 /**
  * Copyright 2025 DiTalk.tech All Rights Reserved.
- * @desc 喜讯接口
+ * @desc 会员照片
  * @author weidixian
  */
 
@@ -10,18 +10,30 @@
  */
 export const detail = (id) => {
 	return uni.request({
-		url: '/uni/news/info/' + id,
+		url: '/uni/member/photo/' + id,
 		method: 'GET',
 	});
 }
 
 /**
- * 列表
+ * 列表 —— 指定用户
  * @returns {Array} 列表
  */
-export const list = (params) => {
+export const listMember = (memberId, params) => {
 	return uni.request({
-		url: '/uni/news/info/list',
+		url: '/uni/member/photo/list/' + memberId,
+		method: 'GET',
+		data: params,
+	});
+}
+
+/**
+ * 列表 —— 我自己的
+ * @returns {Array} 列表
+ */
+export const listMy = (params) => {
+	return uni.request({
+		url: '/uni/member/photo/list',
 		method: 'GET',
 		data: params,
 	});
@@ -33,7 +45,7 @@ export const list = (params) => {
  */
 export const add = (entity) => {
 	return uni.request({
-		url: '/uni/news/info',
+		url: '/uni/member/photo',
 		method: 'POST',
 		data: entity,
 	});
@@ -45,7 +57,7 @@ export const add = (entity) => {
  */
 export const update = (entity) => {
 	return uni.request({
-		url: '/uni/news/info',
+		url: '/uni/member/photo',
 		method: 'PUT',
 		data: entity,
 	});
@@ -57,18 +69,7 @@ export const update = (entity) => {
  */
 export const remove = (ids) => {
 	return uni.request({
-		url: '/uni/news/info/' + ids,
+		url: '/uni/member/photo/' + ids,
 		method: 'DELETE',
 	});
-}
-
-/**
- * 获得的总数
- * @returns {number} 总数
- */
-export const total = () => {
-	return uni.request({
-		url: '/uni/news/info/total',
-		method: 'GET'
-	})
 }

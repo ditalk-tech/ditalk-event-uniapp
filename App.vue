@@ -61,23 +61,27 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	}
 
 	/* 块标题 */
-	.dt_head-title {
+	.dt_head-title,
+	.dt_head-title-noline {
 		display: flex;
 		flex-direction: row;
 		align-items: flex-end;
 		padding: 16rpx 20rpx;
-		border-bottom: 1rpx solid $global-mid-gray;
 
 		.title {
 			flex: 1;
 		}
-		
-		.border {
-			font-weight: bolder;
-		}
 
 		.more {
 			font-size: small;
+		}
+	}
+	
+	.dt_head-title {
+		border-bottom: 1rpx solid $global-mid-gray;
+		
+		.border {
+			font-weight: bolder;
 		}
 	}
 
