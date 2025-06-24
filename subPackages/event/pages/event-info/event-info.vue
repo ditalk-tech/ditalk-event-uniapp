@@ -56,7 +56,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	const isNew = ref(false)
 	const eventInfo = ref({
 		coverImageUrl: '',
-		// memberIds: '[]'
+		// members: '[]'
 	})
 	const memberList = ref([])
 	const momentList = ref([])
@@ -110,7 +110,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	const getEventDetail = (eventId) => {
 		EventInfoService.detail(eventId).then(res => {
 			eventInfo.value = ResUtil.getData(res)
-			memberList.value = JSON.parse(eventInfo.value.memberIds)
+			memberList.value = JSON.parse(eventInfo.value.members)
 			momentList.value = eventInfo.value.eventMoments
 			isNew.value = dayjs(eventInfo.value.applicationDeadline).isAfter(dayjs())
 		})
