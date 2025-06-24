@@ -129,10 +129,10 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		NewsInfoService.total().then(res => {
 			newsInfoTotal.value = ResUtil.getData(res)
 		})
-		EventInfoService.newList({ 'pageSize': 6 }).then(res => {
+		EventInfoService.newEvents({ 'pageSize': 6 }).then(res => {
 			newEventList.value = ResUtil.getData(res)
 		})
-		EventInfoService.oldList({ 'pageSize': 16 }).then(res => {
+		EventInfoService.oldEvents({ 'pageSize': 16 }).then(res => {
 			oldEventList.value = ResUtil.getData(res)
 		})
 	})

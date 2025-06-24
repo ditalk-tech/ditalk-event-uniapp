@@ -57,7 +57,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		let pageSize = 30 // 默认是30
 		if (hasMore.value) {
 			uni.showLoading({ title: '加载中', mask: true })
-			EventInfoService.oldList({ 'id': lastId.value, 'pageSize': pageSize }).then(res => {
+			EventInfoService.oldEvents({ 'id': lastId.value, 'pageSize': pageSize }).then(res => {
 				const newData = ResUtil.getData(res)
 				if (!!newData && newData.length > 0) {
 					dataList.value = [...dataList.value, ...newData]; // 展开追加记录

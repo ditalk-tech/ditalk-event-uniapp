@@ -55,7 +55,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 	// Event
 	onLoad(() => { // Uni lifecycle
-		EventInfoService.newList({ 'pageSize': 100 }).then(res => {
+		EventInfoService.newEvents({ 'pageSize': 100 }).then(res => {
 			dataList.value = ResUtil.getData(res)
 		})
 	})

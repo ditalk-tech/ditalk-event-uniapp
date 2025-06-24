@@ -4,36 +4,30 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <template>
 	<view class="page-container">
 		<view class="new-event">
-			<view v-for="(item,index) in newEventInfoList" :key="index" class="event" @click="toEventInfo(true)">
-				<image class="cover-image" :src="newEventInfo.coverImage"></image>
-				<view class="title">{{newEventInfo.title}}</view>
-				<view class="start-time">活动时间：{{newEventInfo.startTime}}</view>
-				<view class="people-number">已报名人数：{{newEventInfo.peopleNumber}}</view>
-				<view class="location">{{newEventInfo.location}}</view>
-				<view class="register-btn">我的签到码</view>
+			<view v-for="(item,index) in dataList" :key="index" class="event" @click="toEventInfo(item.id)">
+				<image class="cover-image" :src="item.coverImageUrl"></image>
+				<view class="title">{{item.title}}</view>
+				<view class="application-deadline">报名截止：{{dayjs(item.applicationDeadline).format('YYYY-MM-DD')}}
+				</view>
+				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD')}}</view>
+				<view class="quota">活动名额：{{JSON.parse(item.members).length}} / {{item.quota}}</view>
+				<view class="location">地点：{{item.location}}</view>
+				<view class="code-btn">我的签到码</view>
 			</view>
 		</view>
-		<dt-copyright></dt-copyright>
 	</view>
 </template>
 
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
-	// import * as ResUtil from "@/utils/ResUtil"
+	import dayjs from 'dayjs';
+	import * as EventInfoService from "@/service/EventInfoService"
+	import * as ResUtil from "@/utils/ResUtil"
 
-	// const title = ref()
+	const dataList = ref([])
 
 	// const props = defineProps({})
-
-	const newEventInfo = ref({
-		coverImage: 'http://static.ditalk.tech/salon_1001.png',
-		title: '兴趣交流沙龙',
-		startTime: '2022-01-06 10:00',
-		peopleNumber: 10,
-		location: '深圳市南山区前海路3168号XXX活动中心xxx多媒体室'
-	})
-	const newEventInfoList = ref([{}, {}, {}, ])
 
 	// Computed
 	// const xxx = computed(() => {
@@ -61,12 +55,14 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 	// Event
 	onLoad(() => { // Uni lifecycle
-	
+		EventInfoService.myNewEvents({ 'pageSize': 100 }).then(res => {
+			dataList.value = ResUtil.getData(res)
+		})
 	})
-	
+
 	onShow(() => { // Uni lifecycle
 	})
-	
+
 	onMounted(() => { // Vue lifecycle
 	})
 
@@ -88,13 +84,15 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;
-			align-items: center;
+			// align-items: center;
 			box-sizing: border-box;
 			width: 100%;
 			padding: 0 20rpx;
 			margin-top: 20rpx;
 
 			.event {
+				display: flex;
+				flex-direction: column;
 				width: 49%;
 				margin-bottom: 10rpx;
 				background-color: #fff;
@@ -110,26 +108,23 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 					border-radius: 10rpx;
 				}
 
-				.title {}
-
-				.start-time {
-					color: $global-dark-gray;
+				.title {
+					margin: 6rpx 0;
 				}
 
-				.application-deadline {
-					color: $global-dark-gray;
-				}
-
-				.people-number {
+				.start-time,
+				.application-deadline,
+				.quota,
+				.location {
 					color: $global-dark-gray;
 				}
 
 				.location {
-					color: $global-dark-gray;
+					flex: 1;
 					margin-bottom: 10rpx;
 				}
 
-				.register-btn {
+				.code-btn {
 					width: 100%;
 					height: 40rpx;
 					line-height: 40rpx;
