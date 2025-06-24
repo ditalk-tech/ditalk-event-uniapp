@@ -30,7 +30,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 		<!-- 个人信息区域 -->
 		<view class="info-section">
-			<view class="name">{{ memberInfo?.name || "" }}</view>
 			<view class="basic-info">
 				<text>性别：{{ memberInfo?.sexLabel || "" }}</text>
 				<text>年龄段：{{ memberInfo?.ageRange || "-" }}</text>
@@ -183,12 +182,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		.info-section {
 			padding: 0rpx 20rpx 24rpx 20rpx;
 
-			.name {
-				font-size: 32rpx;
-				font-weight: bold;
-				margin-bottom: 20rpx;
-			}
-
 			.basic-info,
 			.detail-info {
 				display: flex;
@@ -197,7 +190,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 				text {
 					width: 50%;
-					font-size: 26rpx;
+					// font-size: 26rpx;
 					line-height: 2;
 				}
 			}
@@ -205,7 +198,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			.intro {
 				text {
 					display: block;
-					font-size: 26rpx;
+					// font-size: 26rpx;
 					line-height: 1.8;
 				}
 			}
@@ -224,7 +217,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 			.caption {
 				display: block;
-				font-size: 24rpx;
+				// font-size: 24rpx;
 				line-height: 1.6;
 				margin-top: 12rpx;
 			}

@@ -16,7 +16,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view class="location">活动地点：{{eventInfo.location}}</view>
 			<view class="arrangement">活动安排</view>
 			<view class="arrangement-text">{{eventInfo.arrangement}}</view>
-			<button class="register-btn" v-if="isNew" @click="register">我要报名</button>
+			<button size="mini" class="signup-btn" v-if="isNew" @click="signup(eventInfo.id)">我要报名</button>
 		</view>
 		<view class="dt_head-title">
 			<view class="title">报名人员</view>
@@ -25,8 +25,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view v-for="(item,index) in memberList" :key="index" class="member-info" @click="toMemberInfo(item.id)">
 				<image class="avatar" :src="item.avatar"></image>
 				<view>
-					<text class="name">{{item.name}}</text>
-					<uni-icons type="heart" size="12"></uni-icons>
+					<view class="name">{{item.name}}</view>
+					<!-- <uni-icons type="heart" size="12"></uni-icons> -->
 				</view>
 			</view>
 		</view>
@@ -50,9 +50,9 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	import { onLoad, onShow } from "@dcloudio/uni-app"
 	import dayjs from 'dayjs';
 	import * as EventInfoService from "@/service/EventInfoService"
+	import * as EventMemberService from "@/service/EventMemberService"
 	import * as ResUtil from "@/utils/ResUtil"
 
-	const infoId = ref(0)
 	const isNew = ref(false)
 	const eventInfo = ref({
 		coverImageUrl: '',
@@ -68,10 +68,10 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// 	return xxx;
 	// })
 	const maleCount = computed(() => {
-		return memberList.value.filter(item => item.sex == '男').length
+		return memberList.value.filter(item => item.sex == '0').length
 	})
 	const femaleCount = computed(() => {
-		return memberList.value.filter(item => item.sex == '女').length
+		return memberList.value.filter(item => item.sex == '1').length
 	})
 
 	// Watch
@@ -85,18 +85,19 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// }
 
 	// Methods
-	const register = () => {
+	const signup = (eventId) => {
 		uni.showModal({
 			title: '报名提示',
-			content: '连续爽约3次后，3个月内停止报名权限。\n当前报名不支持取消。',
+			content: '当前报名不支持取消。\t\n若连续爽约3次，3个月内不能报名。',
 			showCancel: true,
 			success: function(res) {
 				if (res.confirm) {
-					console.log('点击确定');
-				} else if (res.cancel) {
-					console.log('点击取消');
-				}
-			}
+					EventMemberService.signup(eventId).then(res => {
+						ResUtil.showMsg(res)
+						getEventDetail(eventId)
+					})
+				} else if (res.cancel) {}
+			},
 		})
 	}
 
@@ -106,15 +107,18 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		})
 	}
 
-	// Event
-	onLoad((options) => { // Uni lifecycle
-		infoId.value = options.id
-		EventInfoService.detail(infoId.value).then(res => {
+	const getEventDetail = (eventId) => {
+		EventInfoService.detail(eventId).then(res => {
 			eventInfo.value = ResUtil.getData(res)
 			memberList.value = JSON.parse(eventInfo.value.memberIds)
 			momentList.value = eventInfo.value.eventMoments
 			isNew.value = dayjs(eventInfo.value.applicationDeadline).isAfter(dayjs())
 		})
+	}
+
+	// Event
+	onLoad((options) => { // Uni lifecycle
+		getEventDetail(options.id)
 	})
 
 	onShow(() => { // Uni lifecycle
@@ -161,13 +165,13 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			.arrangement {
 				margin-top: 20rpx;
 			}
-			
+
 			.arrangement-text {
 				color: $global-dark-gray;
 				margin-bottom: 30rpx;
 			}
 
-			.register-btn {
+			.signup-btn {
 				width: 100%;
 				text-align: center;
 				background-color: $global-pink;
@@ -189,23 +193,32 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			.member-info {
 				display: flex;
 				flex-direction: column;
-				// justify-content: space-between;
 				align-items: center;
 
 				margin: 5rpx 0;
 				border: 1px solid $global-light-gray;
 
 				.avatar {
-					width: 110rpx;
-					height: 110rpx;
+					width: 56px;
+					height: 56px;
 					border-radius: 50%;
-					margin: 10rpx;
+					margin: 6px;
 				}
 
 				.name {
-					font-size: medium;
-					margin-right: 20rpx;
+					font-size: small;
+					// margin-right: 4px;
+
+					/* 禁止换行 */
+					white-space: nowrap;
+					/* 超出部分隐藏 */
+					overflow: hidden;
+					/* 显示省略号 */
+					text-overflow: ellipsis;
+					/* 最大宽度限制 */
+					max-width: 68px;
 				}
+
 
 				.uni-icons {}
 			}

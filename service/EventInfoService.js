@@ -1,6 +1,6 @@
 /**
  * Copyright 2025 DiTalk.tech All Rights Reserved.
- * @desc 事件活动接口
+ * @desc 活动信息接口
  * @author weidixian
  */
 
