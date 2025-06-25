@@ -28,3 +28,18 @@ export const myInfo = () => {
 		method: 'GET',
 	});
 }
+
+/**
+ * 获取本人详细信息
+ * 
+ * 
+ * @param {Object} info 用户信息
+ * @returns {Object} 详情
+ */
+export const updateMyInfo = (info) => {
+	return uni.request({
+		url: '/uni/member/info/my',
+		method: 'PUT',
+		data: info,
+	});
+}

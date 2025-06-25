@@ -85,6 +85,15 @@
 				}
 			}
 		]
+	}, {
+		"root": "subPackages/user/pages",
+		"pages": [{
+			"path" : "edit-user/edit-user",
+			"style" : 
+			{
+				"navigationBarTitleText" : "编辑信息"
+			}
+		}]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

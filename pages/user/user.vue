@@ -25,7 +25,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view class="right">
 				<!-- 头像 -->
 				<image class="avatar-circle" src="http://static.ditalk.tech/male.png"></image>
-				<button @click="handleEditInfo">编辑信息</button>
+				<button @click="toEditUser">编辑信息</button>
 			</view>
 		</view>
 
@@ -64,10 +64,9 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	const memberInfo = ref({})
 	const momentList = ref([])
 
-	const handleEditInfo = () => {
-		uni.showToast({
-			title: '进入信息编辑',
-			icon: 'none'
+	const toEditUser = () => {
+		uni.navigateTo({
+			url: '/subPackages/user/pages/edit-user/edit-user'
 		})
 	}
 	const handleEditMoments = () => {
