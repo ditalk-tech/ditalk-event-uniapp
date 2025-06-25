@@ -50,7 +50,6 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		</view>
 
 		<!-- 生活瞬间区域 -->
-
 		<view class="dt_head-title-noline">
 			<view class="title">生活瞬间（最多5图）</view>
 		</view>
