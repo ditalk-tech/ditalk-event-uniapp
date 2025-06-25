@@ -26,6 +26,30 @@ uni.addInterceptor('request', {
 	}
 })
 
+uni.addInterceptor('uploadFile', {
+	invoke(args) {
+		args.url = GlobalConfig.domain + args.url
+		args.header = {
+			"clientid": GlobalConfig.clientId // 与后端约定，目前写死
+		}
+		let token = uni.getStorageSync("token")
+		if (!!token) {
+			Object.assign(args.header, {"Authorization": "Bearer " + token})
+		}
+		console.debug(args)
+	},
+	success(res) {
+		console.debug(res)
+	},
+	fail(error) {
+		console.debug(error) // 如网络无法连接
+		uni.showToast({
+			title: error.errMsg,
+			icon: 'none'
+		})
+	}
+})
+
 // #ifndef VUE3
 import Vue from 'vue'
 import './uni.promisify.adaptor'

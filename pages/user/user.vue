@@ -24,8 +24,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 			<view class="right">
 				<!-- 头像 -->
-				<image class="avatar-circle" src="http://static.ditalk.tech/male.png"></image>
-				<button @click="toEditUser">编辑信息</button>
+				<image class="avatar-circle" :src="memberInfo.avatarUrl" @click="chooseAndUploadAvatar"></image>
+				<button @click="toEditUser" style="margin-top: 40rpx;">编辑信息</button>
 			</view>
 		</view>
 
@@ -64,11 +64,68 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	const memberInfo = ref({})
 	const momentList = ref([])
 
+	const chooseAndUploadAvatar = () => {
+		uni.chooseImage({
+			count: 1, // 默认为1，只选择一张图片
+			sizeType: ['compressed'], // 'original', 'compressed'
+			sourceType: ['album', 'camera'],
+			success: chooseImageRes => {
+				const tempFilePaths = chooseImageRes.tempFilePaths;
+				const uploadTask = uni.uploadFile({ // ************* 上传图片并记录数据 *************
+					url: '/uni/oss/upload', // 你的上传接口地址
+					filePath: tempFilePaths[0],
+					name: 'file', // 这里根据后端需要的字段来定义
+					formData: {
+						// 'user': 'test' // 其他要传的参数
+					},
+					method: 'POST',
+					success: uploadRes => {
+						uploadRes.data = JSON.parse(uploadRes.data) // uploadRes.data 是字符串，需要解析成对象并覆盖uploadRes.data
+						const ossVo = ResUtil.getData(uploadRes)
+						// 上传成功处理逻辑
+						memberInfo.value.avatar = ossVo.ossId
+						memberInfo.value.avatarUrl = ossVo.url
+						// ************* 更新个人头像信息到数据库 *************
+						const info = {}
+						info.id = memberInfo.value.id
+						info.version = memberInfo.value.version
+						info.avatar = ossVo.ossId
+						MemberInfoService.updateMyAvatar(info).then((res) => {
+							ResUtil.showMsg(res)
+							loadData()
+						})
+					},
+					fail: uploadError => {
+						// 上传失败处理逻辑
+						// console.debug('upload fail:', uploadError);
+						uni.showToast({
+							icon: 'none',
+							title: uploadError
+						});
+					}
+				});
+				// 监听上传进度变化
+				uploadTask.onProgressUpdate(progressEvent => {
+					// console.debug('上传进度' + progressEvent.progress + '%');
+				});
+			},
+			fail: chooseImageError => {
+				// 选择图片失败处理逻辑
+				// console.debug('choose image fail:', chooseImageError);
+				uni.showToast({
+					icon: 'none',
+					title: chooseImageError
+				});
+			}
+		})
+	}
+
 	const toEditUser = () => {
 		uni.navigateTo({
 			url: '/subPackages/user/pages/edit-user/edit-user'
 		})
 	}
+
 	const handleEditMoments = () => {
 		uni.showToast({
 			title: '进入生活瞬间编辑',
