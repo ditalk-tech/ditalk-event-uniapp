@@ -27,7 +27,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	import * as ResUtil from "@/utils/ResUtil"
 
 	const dataList = ref([])
-	
+
 	const lastId = ref("")
 	const hasMore = ref(true)
 

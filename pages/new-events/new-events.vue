@@ -12,7 +12,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD')}}</view>
 				<view class="quota">活动名额：{{JSON.parse(item.members).length}} / {{item.quota}}</view>
 				<view class="location">地点：{{item.location}}</view>
-				<view class="code-btn">我的签到码</view>
+				<view class="code-btn">查看签到码</view>
 			</view>
 		</view>
 	</view>
@@ -129,8 +129,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 					height: 40rpx;
 					line-height: 40rpx;
 					text-align: center;
-					background-color: $global-pink;
-					color: $global-white;
+					background-color: $global-mid-gray;
+					// color: $global-dark-gray;
 					border-radius: 20rpx;
 				}
 			}

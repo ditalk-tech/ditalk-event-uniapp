@@ -16,7 +16,18 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view class="location">活动地点：{{eventInfo.location}}</view>
 			<view class="arrangement">活动安排</view>
 			<view class="arrangement-text">{{eventInfo.arrangement}}</view>
-			<button size="mini" class="signup-btn" v-if="isNew" @click="signup(eventInfo.id)">我要报名</button>
+			<!-- 新的活动 -->
+			<template v-if="isNew">
+				<!-- 报名后显示验证码 -->
+				<button size="mini" class="signed-up-btn" v-if="isSignedUp">签到码：{{signCode}}</button>
+				<!-- 显示报名按钮 -->
+				<button size="mini" class="sign-up-btn" @click="signup(eventInfo.id)" v-else>我要报名</button>
+			</template>
+			<!-- 历史活动 -->
+			<template v-else>
+				<!-- 报名后才会有显示验证码 -->
+				<button size="mini" class="signed-up-btn" v-if="isSignedUp">签到码：{{signCode}}</button>
+			</template>
 		</view>
 		<view class="dt_head-title">
 			<view class="title">报名人员</view>
@@ -30,7 +41,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				</view>
 			</view>
 		</view>
-
+		<!-- 历史活动 -->
 		<template v-if="!isNew">
 			<view class="dt_head-title-noline">
 				<view class="title">活动精彩瞬间</view>
@@ -60,13 +71,12 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	})
 	const memberList = ref([])
 	const momentList = ref([])
+	const isSignedUp = ref(false) // 判断是否已经报名
+	const signCode = ref('') // 签到码
 
 	// const props = defineProps({})
 
 	// Computed
-	// const xxx = computed(() => {
-	// 	return xxx;
-	// })
 	const maleCount = computed(() => {
 		return memberList.value.filter(item => item.sex == '0').length
 	})
@@ -113,11 +123,27 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			memberList.value = JSON.parse(eventInfo.value.members)
 			momentList.value = eventInfo.value.eventMoments
 			isNew.value = dayjs(eventInfo.value.applicationDeadline).isAfter(dayjs())
+			// 判断是否已经报名
+			isSignedUp.value = eventInfo.value.members.includes('"' + uni.getStorageSync("myId") + '"');
+			if (isSignedUp.value) {
+				getSignCode(eventId)
+			}
+		})
+	}
+
+	/**
+	 * 获取签到码
+	 * @param {number} eventId 活动id
+	 */
+	const getSignCode = (eventId) => {
+		EventMemberService.myEventData(eventId).then(res => {
+			signCode.value = ResUtil.getData(res).signCode
 		})
 	}
 
 	// Event
 	onLoad((options) => { // Uni lifecycle
+		// options.id == eventId
 		getEventDetail(options.id)
 	})
 
@@ -172,13 +198,24 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				margin-bottom: 30rpx;
 			}
 
-			.signup-btn {
+			.sign-up-btn,
+			.signed-up-btn {
 				width: 100%;
 				text-align: center;
-				background-color: $global-pink;
-				color: $global-white;
 				border-radius: 20rpx;
 				margin-bottom: 20rpx;
+			}
+
+			.sign-up-btn {
+				background-color: $global-pink;
+				color: $global-white;
+			}
+
+			.signed-up-btn {
+				background-color: $global-bg-gray;
+				color: $global-dark-gray;
+				font-size: large;
+				font-weight: bold;
 			}
 		}
 

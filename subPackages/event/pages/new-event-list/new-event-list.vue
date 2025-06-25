@@ -12,7 +12,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				<view class="start-time">活动时间：{{dayjs(item.startTime).format('YYYY-MM-DD')}}</view>
 				<view class="quota">活动名额：{{JSON.parse(item.members).length}} / {{item.quota}}</view>
 				<view class="location">地点：{{item.location}}</view>
-				<view class="register-btn">我要报名</view>
+				<view class="signed-up-btn" v-if="isSignedUp(item.members)">我已报名</view>
+				<view class="sign-up-btn" v-else>我要报名</view>		
 			</view>
 		</view>
 	</view>
@@ -45,7 +46,11 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// }
 
 	// Methods
-	// const xxx = () => {}
+	const isSignedUp = (members) => {
+		// 如果members文本中包含当前用户的id，则返回true，否则返回false
+		const myId = uni.getStorageSync("myId")
+		return members.includes('"' + myId + '"');
+	}
 
 	const toEventInfo = (id) => {
 		uni.navigateTo({
@@ -124,14 +129,23 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 					margin-bottom: 10rpx;
 				}
 
-				.register-btn {
+				.sign-up-btn,
+				.signed-up-btn {
 					width: 100%;
 					height: 40rpx;
 					line-height: 40rpx;
 					text-align: center;
+					border-radius: 20rpx;
+				}
+
+				.sign-up-btn {
 					background-color: $global-pink;
 					color: $global-white;
-					border-radius: 20rpx;
+				}
+
+				.signed-up-btn {
+					background-color: $global-bg-gray;
+					color: $global-dark-gray;
 				}
 			}
 		}

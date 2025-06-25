@@ -30,11 +30,15 @@ export const doLogin = async () => {
 			},
 			success(res) {
 				const data = ResUtil.getData(res)
-				if (!!data.openid) {
-					uni.setStorageSync("openid", data.openid)
-				}
+				// if (!!data.openid) {
+				// 	uni.setStorageSync("openid", data.openid)
+				// }
 				if (!!data.access_token) {
 					uni.setStorageSync("token", data.access_token)
+					getMyId().then(res => {
+						const myId = ResUtil.getData(res)
+						uni.setStorageSync("myId", myId)
+					})
 					uni.reLaunch({
 						url: "/pages/index/index"
 					})
@@ -46,7 +50,7 @@ export const doLogin = async () => {
 				console.error(res.msg);
 			}
 		})
-		uni.setStorageSync('userInfo', userInfo)
+		// uni.setStorageSync('userInfo', userInfo)
 		// #endif
 
 		// #ifndef MP
@@ -84,6 +88,16 @@ export const logout = debounce(
 export const verifyToken = function() {
 	return uni.request({
 		url: '/auth/uni/verify',
+		method: "GET"
+	})
+}
+
+/**
+ * @desc getMyId
+ */
+export const getMyId = function() {
+	return uni.request({
+		url: '/auth/uni/getMyId',
 		method: "GET"
 	})
 }
