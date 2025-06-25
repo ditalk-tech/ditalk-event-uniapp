@@ -54,7 +54,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
-	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import { onLoad, onShow, onPullDownRefresh } from "@dcloudio/uni-app"
 	import dayjs from 'dayjs';
 	import * as BannerService from "@/service/BannerService"
 	import * as NewsInfoService from "@/service/NewsInfoService"
@@ -121,9 +121,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			url: '/subPackages/event/pages/event-info/event-info?id=' + id
 		})
 	}
-
-	// Event
-	onLoad((options) => { // Uni lifecycle
+	
+	const loadData = () => {
 		BannerService.getImage().then(res => {
 			const jsonStr = ResUtil.getData(res)
 			bannerUrl.value = JSON.parse(jsonStr).url
@@ -140,22 +139,25 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		EventInfoService.oldEvents({ 'pageSize': 16 }).then(res => {
 			oldEventList.value = ResUtil.getData(res)
 		})
+	}
+
+	// Event
+	onLoad((options) => { // Uni lifecycle
+		loadData()
 	})
 
 	onShow(() => { // Uni lifecycle
-		// // 
-		// const newsInfoRes = await NewsInfoService.getNewsInfoList()
-		// newsInfoList.value = ResUtil.getData(newsInfoRes)
-		// // 
-		// const res = await BannerService.getImage()
-		// const jsonStr = ResUtil.getData(res)
-		// bannerUrl.value = JSON.parse(jsonStr).url
 	})
 
 	onShow(() => { // Uni lifecycle
 	})
 
 	onMounted(() => { // Vue lifecycle
+	})
+	
+	onPullDownRefresh(() => { // Uni lifecycle
+		loadData()
+		uni.stopPullDownRefresh()
 	})
 
 	// Expose methods for upper level

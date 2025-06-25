@@ -53,7 +53,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
-	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import { onLoad, onShow, onPullDownRefresh } from "@dcloudio/uni-app"
 	import * as MemberInfoService from "@/service/MemberInfoService"
 	import * as MemberPhotoService from "@/service/MemberPhotoService"
 	import * as AuthService from "@/service/AuthService"
@@ -63,7 +63,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// 我的信息
 	const memberInfo = ref({})
 	const momentList = ref([])
-	
+
 	const handleEditInfo = () => {
 		uni.showToast({
 			title: '进入信息编辑',
@@ -76,15 +76,14 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			icon: 'none'
 		})
 	}
-	
+
 	const verifyToken = () => {
 		AuthService.verifyToken().then((res) => {
 			ResUtil.showMsg(res, res.data.msg)
 		})
 	}
-	
-	// Event
-	onLoad(() => { // Uni lifecycle
+
+	const loadData = () => {
 		MemberInfoService.myInfo().then((res) => {
 			memberInfo.value = ResUtil.getData(res)
 			if (!!memberInfo.value && !!memberInfo.value.id) {
@@ -93,12 +92,22 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				})
 			}
 		})
+	}
+
+	// Event
+	onLoad(() => { // Uni lifecycle
+		loadData()
 	})
-	
+
 	onShow(() => { // Uni lifecycle
 	})
-	
+
 	onMounted(() => { // Vue lifecycle
+	})
+
+	onPullDownRefresh(() => { // Uni lifecycle
+		loadData()
+		uni.stopPullDownRefresh()
 	})
 </script>
 

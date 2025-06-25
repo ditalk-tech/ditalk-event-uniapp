@@ -20,7 +20,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
-	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import { onLoad, onShow, onPullDownRefresh } from "@dcloudio/uni-app"
 	import dayjs from 'dayjs';
 	import * as EventInfoService from "@/service/EventInfoService"
 	import * as ResUtil from "@/utils/ResUtil"
@@ -52,18 +52,27 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			url: '/subPackages/event/pages/event-info/event-info?id=' + id
 		})
 	}
-
-	// Event
-	onLoad(() => { // Uni lifecycle
+	
+	const loadData = () => {
 		EventInfoService.myNewEvents({ 'pageSize': 100 }).then(res => {
 			dataList.value = ResUtil.getData(res)
 		})
+	}
+
+	// Event
+	onLoad(() => { // Uni lifecycle
+		loadData()
 	})
 
 	onShow(() => { // Uni lifecycle
 	})
 
 	onMounted(() => { // Vue lifecycle
+	})
+	
+	onPullDownRefresh(() => { // Uni lifecycle
+		loadData()
+		uni.stopPullDownRefresh()
 	})
 
 	// Expose methods for upper level

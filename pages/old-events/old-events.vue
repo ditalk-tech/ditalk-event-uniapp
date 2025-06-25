@@ -21,13 +21,12 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 <script setup>
 	import { ref, computed, watch, onMounted } from "vue"
-	import { onLoad, onShow } from "@dcloudio/uni-app"
+	import { onLoad, onShow, onPullDownRefresh } from "@dcloudio/uni-app"
 	import dayjs from 'dayjs';
 	import * as EventInfoService from "@/service/EventInfoService"
 	import * as ResUtil from "@/utils/ResUtil"
 
 	const dataList = ref([])
-	
 	const lastId = ref("")
 	const hasMore = ref(true)
 
@@ -79,6 +78,12 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			url: '/subPackages/event/pages/event-info/event-info?id=' + id
 		})
 	}
+	
+	const init = () => {
+		dataList.value = []
+		lastId.value = ""
+		hasMore.value = true
+	}
 
 	// Event
 	onLoad(() => { // Uni lifecycle
@@ -91,6 +96,11 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	onMounted(() => { // Vue lifecycle
 	})
 
+	onPullDownRefresh(() => { // Uni lifecycle
+		init()
+		loadData()
+		uni.stopPullDownRefresh()
+	})
 	// Expose methods for upper level
 	// defineExpose({
 	// 	one, two ,three
