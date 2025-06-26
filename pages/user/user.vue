@@ -11,7 +11,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 				<view>状态：{{ memberInfo.openStateLabel }}</view>
 				<view>性别：{{ memberInfo.sexLabel }}</view>
 				<!-- <view>年龄段：{{ memberInfo.ageRange }}</view> -->
-				<view>出生：{{ dayjs(memberInfo.birthday).format('YYYY-MM-DD') }}</view>
+				<view>出生：{{ memberInfo.birthday ? dayjs(memberInfo.birthday).format('YYYY-MM-DD') : "" }}</view>
 				<view>身高：{{ memberInfo.tall }}</view>
 				<view>电话：{{ memberInfo.phoneNumber }}</view>
 				<view>邮箱：{{ memberInfo.email }}</view>
@@ -37,7 +37,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 		<!-- 生活瞬间区域 -->
 		<view class="dt_head-title-noline">
-			<view class="title" @click="verifyToken">生活瞬间</view>
+			<!-- <view class="title" @click="verifyToken">生活瞬间</view> -->
+			<view class="title">生活瞬间</view>
 			<view class="more" @click="handleEditMoments">点我编辑</view>
 		</view>
 		<view v-for="(item, index) in photoList" :key="index" class="moment">
