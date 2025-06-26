@@ -8,7 +8,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			<view>深圳帝拓科技服务中心 DiTalk.Tech</view>
 			<view>email：ditalk@163.com</view>
 			<view>微信扫码联系</view>
-			<img src="http://static.ditalk.tech/ditalk_weixin_qr_code.png" class="qrcode" @click="download" />
+			<img :src="imageUrl" class="qrcode" @click="downloadImage" />
 		</view>
 	</view>
 </template>
@@ -19,7 +19,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// import * as ResUtil from "@/utils/ResUtil"
 	// import * as UniStorage from "@/common/UniStorage"
 
-	// const title = ref()
+	const imageUrl = ref('https://static.ditalk.tech/ditalk_weixin_qr_code.png')
 
 	// const props = defineProps({})
 
@@ -31,31 +31,51 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// Watch
 	// watch(xxx, (newValue) => {
 	// })
-	
+
 	// Emit
 	// const emit = defineEmits(['change', 'remove', 'empty'])
 	// const onChange = (value) => {
 	// 	emit('change', arg1, arg2)
 	// }
-	
+
 	// Methods
-	// const xxx = () => {}
-	const download = () => {
-		uni.downloadFile({
-			url: 'http://static.ditalk.tech/ditalk_weixin_qr_code.png',
-			success: (res) => {
-				if (res.statusCode === 200) {
-					uni.saveImageToPhotosAlbum({
-						filePath: res.tempFilePath,
-						success: function () {
-							uni.showToast({
-								title: '保存成功',
-								icon: 'success',
-								duration: 2000
-							})
+	const downloadImage = () => {
+		uni.showLoading({
+			title: '下载中...',
+			mask: true
+		})
+
+		uni.downloadFile({ url: imageUrl.value }).then(downloadRes => {
+			if (downloadRes.statusCode === 200) {
+				// 下载成功，保存到相册
+				return uni.saveImageToPhotosAlbum({
+					filePath: downloadRes.tempFilePath
+				})
+			} else {
+				throw new Error(`下载失败，状态码: ${downloadRes.statusCode}`)
+			}
+		}).then(() => {
+			uni.hideLoading()
+			uni.showToast({
+				title: '保存成功',
+				icon: 'success'
+			})
+		}).catch(err => {
+			uni.hideLoading()
+
+			// 处理用户未授权的情况
+			if (err.errMsg.includes('auth deny')) {
+				uni.showModal({
+					title: '提示',
+					content: '需要获取相册权限才能保存图片',
+					success: modalRes => {
+						if (modalRes.confirm) {
+							uni.openSetting() // 打开设置页让用户授权
 						}
-					})
-				}
+					}
+				})
+			} else {
+				console.warn(`保存失败: ${err.errMsg}`)
 			}
 		})
 	}
@@ -72,7 +92,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	onMounted(() => { // Vue lifecycle
 
 	})
-	
+
 	// Expose methods for upper level
 	// defineExpose({
 	// 	one, two ,three
@@ -89,6 +109,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			height: 50px;
 			margin-top: 10rpx;
 		}
+
 		.copyright {
 			text-align: center;
 			font-size: 12px;
