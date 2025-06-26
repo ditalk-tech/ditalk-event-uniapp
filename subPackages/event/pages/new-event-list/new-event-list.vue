@@ -92,8 +92,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 			// align-items: center;
 			box-sizing: border-box;
 			width: 100%;
-			padding: 0 20rpx;
-			margin-top: 20rpx;
+			padding: 20rpx 20rpx 40rpx 20rpx;
 
 			.event {
 				display: flex;
