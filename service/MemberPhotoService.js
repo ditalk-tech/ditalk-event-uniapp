@@ -19,11 +19,10 @@ export const detail = (id) => {
  * 列表 —— 指定用户
  * @returns {Array} 列表
  */
-export const listMember = (memberId, params) => {
+export const listMember = (memberId) => {
 	return uni.request({
 		url: '/uni/member/photo/list/' + memberId,
 		method: 'GET',
-		data: params,
 	});
 }
 
@@ -31,16 +30,16 @@ export const listMember = (memberId, params) => {
  * 列表 —— 我自己的
  * @returns {Array} 列表
  */
-export const listMy = (params) => {
+export const listMy = () => {
 	return uni.request({
-		url: '/uni/member/photo/list',
+		url: '/uni/member/photo/list/my',
 		method: 'GET',
-		data: params,
 	});
 }
 
 /**
- * 添加记录
+ * 添加记录 —— 仅能我自己的
+ * 
  * @returns {Array} 列表
  */
 export const add = (entity) => {
@@ -52,7 +51,8 @@ export const add = (entity) => {
 }
 
 /**
- * 修改记录
+ * 修改记录 —— 仅能我自己的
+ * 
  * @returns {Array} 列表
  */
 export const update = (entity) => {
@@ -64,7 +64,8 @@ export const update = (entity) => {
 }
 
 /**
- * 删除记录
+ * 删除记录 —— 仅能我自己的
+ * 
  * @returns {Array} 列表
  */
 export const remove = (ids) => {

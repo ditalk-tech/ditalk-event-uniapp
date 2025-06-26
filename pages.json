@@ -63,6 +63,13 @@
 			"style": {
 				"navigationBarTitleText": "会员信息"
 			}
+		},
+		{
+			"path" : "member-photo/member-photo",
+			"style" : 
+			{
+				"navigationBarTitleText" : "编辑照片"
+			}
 		}]
 	}, {
 		"root": "subPackages/event/pages",

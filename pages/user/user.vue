@@ -37,10 +37,10 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 		<!-- 生活瞬间区域 -->
 		<view class="dt_head-title-noline">
-			<view class="title" @click="verifyToken">生活瞬间（最多5图）</view>
-			<view class="more" @click="handleEditMoments">点我编辑（最多5图）</view>
+			<view class="title" @click="verifyToken">生活瞬间</view>
+			<view class="more" @click="handleEditMoments">点我编辑</view>
 		</view>
-		<view v-for="(item, index) in momentList" :key="index" class="moment">
+		<view v-for="(item, index) in photoList" :key="index" class="moment">
 			<image class="image" :src="item.photoUrl"></image>
 			<text class="caption">
 				{{ item.caption }}
@@ -62,7 +62,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 
 	// 我的信息
 	const memberInfo = ref({})
-	const momentList = ref([])
+	const photoList = ref([])
 
 	const chooseAndUploadAvatar = () => {
 		uni.chooseImage({
@@ -127,9 +127,8 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	}
 
 	const handleEditMoments = () => {
-		uni.showToast({
-			title: '进入生活瞬间编辑',
-			icon: 'none'
+		uni.navigateTo({
+			url: '/subPackages/member/pages/member-photo/member-photo'
 		})
 	}
 
@@ -142,11 +141,9 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	const loadData = () => {
 		MemberInfoService.myInfo().then((res) => {
 			memberInfo.value = ResUtil.getData(res)
-			if (!!memberInfo.value && !!memberInfo.value.id) {
-				MemberPhotoService.listMember(memberInfo.value.id, {}).then(res => {
-					momentList.value = ResUtil.getData(res)
-				})
-			}
+		})
+		MemberPhotoService.listMy().then(res => {
+			photoList.value = ResUtil.getData(res)
 		})
 	}
 
@@ -156,6 +153,14 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	})
 
 	onShow(() => { // Uni lifecycle
+		console.log(uni.getStorageSync("reloadMemberPhoto"))
+		console.log(!!uni.getStorageSync("reloadMemberPhoto"))
+		if (!!uni.getStorageSync("reloadMemberPhoto")) {  // 用于通知个人中心页面刷新数据
+			MemberPhotoService.listMy().then(res => {
+				photoList.value = ResUtil.getData(res)
+			})
+			uni.removeStorageSync("reloadMemberPhoto")
+		}
 	})
 
 	onMounted(() => { // Vue lifecycle
