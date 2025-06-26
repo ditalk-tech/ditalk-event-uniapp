@@ -84,20 +84,24 @@ export const tokenInvalid = function(response) {
 			method: "GET"
 		}).then(res => {
 			if (res.data.code == 401) { // Token 失效需要重新登录
-				uni.removeStorageSync("token")
-				uni.showModal({
-					title: "提示",
-					content: "登录已过期，请重新登录",
-					showCancel: false,
-					confirmText: "重新登录",
-					success: function(res) {
-						if (res.confirm) {
-							uni.reLaunch({
-								url: "/pages/login/login"
-							})
+				const doLogin = uni.getStorageSync("doLogin") // 登录控制参数，防止重复弹出登录框，防止重复调用登录接口。true 表示需要登录，false 表示不需要登录
+				if (!doLogin || doLogin == true) {
+					uni.setStorageSync("doLogin", false)
+					uni.removeStorageSync("token")
+					uni.showModal({
+						title: "提示",
+						content: "登录已过期，请重新登录",
+						showCancel: false,
+						confirmText: "重新登录",
+						success: function(res) {
+							if (res.confirm) {
+								uni.reLaunch({
+									url: "/pages/login/login"
+								})
+							}
 						}
-					}
-				})
+					})
+				}
 			} else { // Token 有效，部分API产生的误报
 				uni.showToast({
 					title: "数据加载失败，请刷新",

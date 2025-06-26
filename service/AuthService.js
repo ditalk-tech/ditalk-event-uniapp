@@ -48,6 +48,9 @@ export const doLogin = async () => {
 			},
 			fail(error) {
 				console.error(res.msg);
+			},
+			complete() {
+				uni.setStorageSync("doLogin", true) // 登录控制参数，防止重复弹出登录框，防止重复调用登录接口。true 表示需要登录，false 表示不需要登录
 			}
 		})
 		// uni.setStorageSync('userInfo', userInfo)

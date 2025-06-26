@@ -4,7 +4,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 <template>
 	<view class="page-container">
 		<image src="/static/logo.svg" class="logo"></image>
-		<button @click="AuthService.doLogin()">登录刷新</button>
+		<button @click="login" v-if="showRefresh">登录刷新</button>
 	</view>
 </template>
 
@@ -12,9 +12,10 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	import { ref, computed, watch, onMounted } from "vue"
 	import { onLoad, onShow } from "@dcloudio/uni-app"
 	import * as AuthService from "@/service/AuthService"
-	import * as ResUtil from "@/utils/ResUtil"
+	// import * as ResUtil from "@/utils/ResUtil"
 
 	// const title = ref()
+	const showRefresh = ref(false)
 
 	// const props = defineProps({})
 
@@ -26,30 +27,39 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// Watch
 	// watch(xxx, (newValue) => {
 	// })
-	
+
 	// Emit
 	// const emit = defineEmits(['change', 'remove', 'empty'])
 	// const onChange = (value) => {
 	// 	emit('change', arg1, arg2)
 	// }
-	
+
 	// Methods
-	// const xxx = () => {}
+	const login = () => {
+		uni.showLoading({
+			title: '登录中...',
+			mask: true
+		})
+		showRefresh.value = false
+		AuthService.doLogin()
+		setTimeout(() => {
+			showRefresh.value = true
+			uni.hideLoading()
+		}, 3000)
+	}
 
 	// Event
-	onLoad(async (options) => { // Uni lifecycle
-		console.log("options", options)
-		AuthService.doLogin()
+	onLoad((options) => { // Uni lifecycle
+		login()
 	})
 
 	onShow(() => { // Uni lifecycle
-		console.log("onShow")
 	})
 
 	onMounted(() => { // Vue lifecycle
 
 	})
-	
+
 	// Expose methods for upper level
 	// defineExpose({
 	// 	one, two ,three
@@ -67,13 +77,13 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		
+
 		.logo {
 			width: 400rpx;
 			height: 400rpx;
 			margin: 0 auto;
 			margin-top: 100rpx;
 		}
-		
+
 	}
 </style>
