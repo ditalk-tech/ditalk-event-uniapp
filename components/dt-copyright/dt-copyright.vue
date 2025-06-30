@@ -19,7 +19,7 @@ Copyright 2025 DiTalk.tech All Rights Reserved.
 	// import * as ResUtil from "@/utils/ResUtil"
 	// import * as UniStorage from "@/common/UniStorage"
 
-	const imageUrl = ref('https://static.ditalk.tech/ditalk_weixin_qr_code.png')
+	const imageUrl = ref('https://ooo.0x0.ooo/2025/06/26/OVLsnt.png')
 
 	// const props = defineProps({})
 
